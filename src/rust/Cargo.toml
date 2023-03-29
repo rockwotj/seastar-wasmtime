@@ -1,0 +1,13 @@
+[package]
+name = "cxx-rust"
+version = "0.1.0"
+edition = "2018"
+
+[lib]
+crate-type = ["staticlib"]
+
+[dependencies]
+cxx = { version = "1.0.83", features = ["c++20"] }
+wasmtime = { version = "7.0.0", default-features = false, features = ["async", "wat", "cranelift"] }
+futures = "0.3.25"
+anyhow = "1.0.66"
