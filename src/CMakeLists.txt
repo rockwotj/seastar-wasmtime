@@ -9,9 +9,11 @@ target_include_directories(cxxbridge-rust PUBLIC "include")
 target_sources(cxxbridge-rust PRIVATE seastar_ffi.cc)
 target_link_libraries(cxxbridge-rust PUBLIC Seastar::seastar)
 
+include_directories(${WasmEdge_BINARY_DIR}/include/api)
+
 add_executable(${PROJECT_NAME})
 target_sources(${PROJECT_NAME}
   PRIVATE
   main.cc
 )
-target_link_libraries(${PROJECT_NAME} PUBLIC cxxbridge-rust Seastar::seastar)
+target_link_libraries(${PROJECT_NAME} PUBLIC cxxbridge-rust Seastar::seastar wasmedge_shared)

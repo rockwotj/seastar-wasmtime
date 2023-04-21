@@ -1,0 +1,62 @@
+BasedOnStyle: Mozilla
+Language: Cpp
+AccessModifierOffset: -4
+AlignAfterOpenBracket: AlwaysBreak
+AllowAllParametersOfDeclarationOnNextLine: true
+AllowShortBlocksOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: true
+AllowShortIfStatementsOnASingleLine: true
+AllowShortLoopsOnASingleLine: false
+AlwaysBreakAfterDefinitionReturnType: None
+AlwaysBreakAfterReturnType: None
+BreakBeforeBinaryOperators: All
+BreakBeforeBraces: Attach
+ColumnLimit: 80
+ContinuationIndentWidth: 2
+Cpp11BracedListStyle: true
+FixNamespaceComments: true
+IncludeBlocks: Regroup
+IncludeCategories:
+  # Seastar files (with angles)
+  - Regex:    '^<seastar/'
+    Priority: 2
+  # Other libraries
+  - Regex:    '^<.+/'
+    Priority: 4
+  # Std header files (with angles)
+  - Regex:    '^<'
+    Priority: 5
+  # Internal headers (with quotes)
+  - Regex:    '.h'
+    Priority: 1
+IndentCaseLabels: false
+IndentWidth: 4
+KeepEmptyLinesAtTheStartOfBlocks: false
+PenaltyBreakAssignment: 80
+PenaltyBreakBeforeFirstCallParameter: 10
+PenaltyReturnTypeOnItsOwnLine: 60
+---
+Language: JavaScript
+# Use 100 columns for JS.
+ColumnLimit: 80
+---
+Language: Java
+ColumnLimit: 80
+AccessModifierOffset: -4
+AlignAfterOpenBracket: AlwaysBreak
+AllowAllParametersOfDeclarationOnNextLine: true
+AllowShortBlocksOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: true
+AllowShortIfStatementsOnASingleLine: true
+AllowShortLoopsOnASingleLine: false
+AlwaysBreakAfterDefinitionReturnType: None
+AlwaysBreakAfterReturnType: None
+BreakBeforeBinaryOperators: All
+BreakBeforeBraces: Attach
+---
+Language: Proto
+BasedOnStyle: Google
+ColumnLimit: 80
+IndentWidth: 4

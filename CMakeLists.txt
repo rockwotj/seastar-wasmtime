@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.23)
+cmake_minimum_required(VERSION 3.22)
 
 project(seastar-wasmtime CXX)
 
@@ -26,4 +26,5 @@ if (CXXBRIDGE STREQUAL "CXXBRIDGE-NOTFOUND")
 endif()
 
 add_subdirectory(seastar)
+add_subdirectory(WasmEdge)
 add_subdirectory(src)

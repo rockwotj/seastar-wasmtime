@@ -18,10 +18,10 @@ mod bridge {
         unsafe fn create_instance(self: &mut Store, engine: &Engine, module: &Module) -> Result<Box<Instance>>;
         type FunctionHandle;
         unsafe fn lookup_function(self: &mut Instance, store: &mut Store, func_name: &str) -> Result<Box<FunctionHandle>>;
-        unsafe fn invoke<'a>(self: &'a mut FunctionHandle, store: &'a mut Store) -> Box<RunningFunction<'a>>;
+        unsafe fn invoke<'a>(self: &'a mut FunctionHandle, store: &'a mut Store, input: i32) -> Box<RunningFunction<'a>>;
         type RunningFunction<'a>;
         // Pump the function and return if it finished or not
-        unsafe fn pump(self: &mut RunningFunction<'_>) -> Result<bool>;
+        unsafe fn pump(self: &mut RunningFunction<'_>) -> Result<i32>;
     }
     unsafe extern "C++" {
         include!("seastar_ffi.h");
@@ -125,7 +125,7 @@ pub struct Instance {
 
 impl Instance {
     fn lookup_function(self: &mut Instance, store: &mut Store, func_name: &str) -> Result<Box<FunctionHandle>> {
-        let handle = self.instance.get_typed_func::<(), ()>(&mut store.store, &func_name).unwrap();
+        let handle = self.instance.get_typed_func::<i32, i32>(&mut store.store, &func_name).unwrap();
         return Ok(Box::new(FunctionHandle { 
             handle
         }));
@@ -133,29 +133,29 @@ impl Instance {
 }
 
 pub struct FunctionHandle {
-    handle: wasmtime::TypedFunc<(), ()>,
+    handle: wasmtime::TypedFunc<i32, i32>,
 }
 
 impl FunctionHandle {
-    fn invoke<'a>(self: &'a mut FunctionHandle, store: &'a mut Store) -> Box<RunningFunction<'a>> {
+    fn invoke<'a>(self: &'a mut FunctionHandle, store: &'a mut Store, input: i32) -> Box<RunningFunction<'a>> {
         return Box::new(
             RunningFunction {
-                fut: Box::pin(self.handle.call_async(&mut store.store, ())) 
+                fut: Box::pin(self.handle.call_async(&mut store.store, input))
             }
         )
     }
 }
 
 pub struct RunningFunction<'a> {
-    fut: BoxFuture<'a, Result<()>>,
+    fut: BoxFuture<'a, Result<i32>>,
 }
 
 impl<'a> RunningFunction<'a> {
-    fn pump(&mut self) -> Result<bool> {
+    fn pump(&mut self) -> Result<i32> {
         let mut noop_waker = core::task::Context::from_waker(futures::task::noop_waker_ref());
         match self.fut.as_mut().poll(&mut noop_waker) {
-            Poll::Pending => Ok(false),
-            Poll::Ready(Ok(())) => Ok(true),
+            Poll::Pending => Ok(-1),
+            Poll::Ready(Ok(r)) => Ok(r),
             Poll::Ready(Err(e)) => Err(e),
         }
     }

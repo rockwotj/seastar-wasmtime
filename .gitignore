@@ -2,3 +2,4 @@ cmake-*-linux-x86_64*
 build
 target
 cmk
+*.wasm

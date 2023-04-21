@@ -1,3 +1,6 @@
 [submodule "seastar"]
 	path = seastar
 	url = https://github.com/scylladb/seastar.git
+[submodule "WasmEdge"]
+	path = WasmEdge
+	url = https://github.com/WasmEdge/WasmEdge.git
